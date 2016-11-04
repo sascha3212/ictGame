@@ -1,0 +1,46 @@
+$icon-font-path: 	"../fonts" !default;
+$icon-font-name: 	"glyphicons-regular" !default;
+$icon-font-svg-id:	"glyphicons_regular" !default;
+
+@import '_bootstrap';
+
+html,* {
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    padding:0;
+    margin:0;
+}
+
+canvas {
+    background-image:url('../images/speelbord.png');
+    float:left;
+}
+
+.scoreWrapper {
+    float:left;
+    background-image:url('../images/score.jpg');
+    width:200px;
+    height:523px;
+}
+.inner{
+    width:160px;
+    margin:30px 18px 18px 18px;
+    padding:0px;
+    height:100%;
+}
+
+.inner h1 {
+    color:#e1002d;
+    font-size:25px;
+}
+.inner span {
+    color:#e1002d;
+    font-size:20px;
+}
+
+#wrapper {
+    
+}
