@@ -16,6 +16,7 @@
 <script> 
 
           (function() {
+
           
             
             var ctx = document.getElementById("ctx").getContext("2d"); 
@@ -34,8 +35,7 @@
             var timer = 0;
 
             var versnelling = -4;
-            var modulesDocent = 150;
-            var modulesEnemy = 130;
+            var modulesRandom = 60;
             
             var sources = {
                 player: './assets/images/player_sprite.png',
@@ -286,18 +286,18 @@
                             player.pressingUp = false;
             };
 
-            update = function(){
-                if(modulesDocent > 40){
-                    if(frameCount % 200 === 0){
-                        modulesDocent -= 10;
-                        console.log(modulesDocent);
-                    }
-                }
-                
-                if(modulesEnemy > 60){
-                    if(frameCount % 200 === 0){
+            function randomSpawn(){
+                var arrayRandom = new Array(randomlyGenerateDocent, randomlyGenerateEnemy);
+                var y = arrayRandom[Math.floor(Math.random()*arrayRandom.length)]();
+                console.log(y);
+            }
+
+            update = function(){ 
+                        
+                if(modulesRandom > 25){
+                    if(frameCount % 150 === 0){
                         modulesEnemy -= 10;
-                        console.log(modulesEnemy);
+                        console.log(modulesRandom);
                     }
                 }
                 
@@ -332,11 +332,8 @@
                         requestAnimationFrame(animate);
                     }
 
-                        if(frameCount % modulesDocent === 0){
-                                randomlyGenerateDocent();
-                            }
-                        if(frameCount % modulesEnemy === 0){
-                                randomlyGenerateEnemy();
+                        if(frameCount % modulesRandom === 0){
+                                randomSpawn(); 
                             }
                             
                     player.attackCounter += player.atkSpd;
