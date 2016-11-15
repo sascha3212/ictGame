@@ -16,7 +16,6 @@
 <script> 
 
           (function() {
-
           
             
             var ctx = document.getElementById("ctx").getContext("2d"); 
@@ -32,10 +31,13 @@
 
             var score = 0;
             var player;
+            var enemy;
+            var docent;
             var timer = 0;
 
             var versnelling = -4;
-            var modulesRandom = 60;
+            var modulesDocent = 150;
+            var modulesEnemy = 130;
             
             var sources = {
                 player: './assets/images/player_sprite.png',
@@ -251,7 +253,7 @@
                     var id = Math.random();
                     var spdX = versnelling;   
                     var spdY = 0;
-                    Hearth(id,x,y,spdX,spdY,width,height);
+                    hearth(id,x,y,spdX,spdY,width,height);
             };            
 
             testCollisionRectRect = function(rect1,rect2){
@@ -286,18 +288,19 @@
                             player.pressingUp = false;
             };
 
-            function randomSpawn(){
-                var arrayRandom = new Array(randomlyGenerateDocent, randomlyGenerateEnemy);
-                var y = arrayRandom[Math.floor(Math.random()*arrayRandom.length)]();
-                console.log(y);
-            }
-
-            update = function(){ 
-                        
-                if(modulesRandom > 25){
-                    if(frameCount % 150 === 0){
+            update = function(){
+                
+                if(modulesDocent > 40){
+                    if(frameCount % 200 === 0){
+                        modulesDocent -= 10;
+                        console.log(modulesDocent);
+                    }
+                }
+                
+                if(modulesEnemy > 60){
+                    if(frameCount % 200 === 0){
                         modulesEnemy -= 10;
-                        console.log(modulesRandom);
+                        console.log(modulesEnemy);
                     }
                 }
                 
@@ -331,9 +334,16 @@
                     if(frameCount % 3 === 0) {
                         requestAnimationFrame(animate);
                     }
-
-                        if(frameCount % modulesRandom === 0){
-                                randomSpawn(); 
+                        
+                        if(frameCount % 500 === 0){
+                            randomlyGenerateHearth();
+                        }
+                        
+                        if(frameCount % modulesDocent === 0){
+                                randomlyGenerateDocent();
+                            }
+                        if(frameCount % modulesEnemy === 0){
+                                randomlyGenerateEnemy();
                             }
                             
                     player.attackCounter += player.atkSpd;
@@ -363,11 +373,30 @@
                                     delete enemyList[key];
                             }
                     }
+                    
+                    for(var key in hearthList){
+                            hearthList[key].update();
+                            if(hearthList[key].x < 0){
+                                delete hearthList[key];
+                            }
+
+                            var isColliding = player.testCollision(hearthList[key]);
+                            if(isColliding){
+                                    player.hp += 1;
+                                    delete hearthList[key];
+                            }
+                    }   
+                        
+                    
                     if(player.hp <= 0){
                             var timeSurvived = Date.now() - timeWhenGameStarted;
                             isPaused = true;
                            // startNewGame();
                     }
+                    if(player.hp > 3) {
+                        player.hp = 3;
+                    }
+                    
                     player.update();
                     ctx.fillText('Score: ' + score,350,55);
             };};
@@ -389,6 +418,8 @@
 
             
                 player = Player();
+                enemy = Enemy();
+                docent = Docent();
                 startNewGame();
 
                 //if(isPaused !== true)
