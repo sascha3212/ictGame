@@ -1,6 +1,13 @@
 extends layout
 
 block content
+    nav(class="navbar navbar-default")
+        .container-fluid
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right
+                    li
+                        a
+                            p Ingelogd als: #{user.nickname}
     .container-fluid
         #wrapper
             .scoreWrapper
