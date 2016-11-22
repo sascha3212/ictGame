@@ -3,6 +3,7 @@
  */
 (function () {
     var ctx = document.getElementById("ctx").getContext("2d");
+    console.log(ctx);
     ctx.font = '25px Arial';
     ctx.fillStyle = '#e1002d';
 
@@ -402,4 +403,7 @@
     enemy = Enemy();
     docent = Docent();
     startNewGame();
+
+    setInterval(update,40);
+
 })();
