@@ -8,12 +8,18 @@ block content
                     li
                         a
                             p Ingelogd als: #{user.nickname}
+                     li
+                        a(href="logout")
+                            p Logout
     .container-fluid
         #wrapper
             .scoreWrapper
                 .inner
                     h1 Highscores
-                    span 1.Sascha
+                    -var count = 1;
+                    each user_score in highscores
+                        span= (count++  +". "+ user_score.score)
+
         canvas(id="ctx", width="788", height="523")
         script(src="/assets/js/canvas_functions.js")
         img(src="/assets/images/player1.png", style="display:none;")

@@ -3,7 +3,7 @@
  */
 (function () {
     var ctx = document.getElementById("ctx").getContext("2d");
-    console.log(ctx);
+    // console.log(ctx);
     ctx.font = '25px Arial';
     ctx.fillStyle = '#e1002d';
 
@@ -23,6 +23,8 @@
     var versnelling = -4;
     var modulesDocent = 150;
     var modulesEnemy = 130;
+
+    var uploadUserScore = true;
 
     var sources = {
         player: '/assets/images/player_sprite.png',
@@ -273,33 +275,42 @@
         if (modulesDocent > 40) {
             if (frameCount % 200 === 0) {
                 modulesDocent -= 10;
-                console.log(modulesDocent);
+                // console.log(modulesDocent);
             }
         }
 
         if (modulesEnemy > 60) {
             if (frameCount % 200 === 0) {
                 modulesEnemy -= 10;
-                console.log(modulesEnemy);
+                // console.log(modulesEnemy);
             }
         }
 
         if (versnelling > -6) {
             if (frameCount % 150 === 0) {
                 versnelling -= 0.1;
-                console.log(versnelling);
+                // console.log(versnelling);
             }
         }
 
-        if (isPaused === true) {
-            ctx.clearRect(0, 0, WIDTH, HEIGHT);
-            ctx.fillText('Game over! Klik om opnieuw te beginnen!', 200, 250);
-            document.getElementById("ctx").addEventListener("click", clickCanvas);
-            function clickCanvas() {
-                startNewGame();
-                isPaused = false;
-                document.getElementById("ctx").removeEventListener('click', clickCanvas);
+        if (isPaused) {
+            // ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            // ctx.fillText('Game over! Klik om opnieuw te beginnen!', 200, 250);
+            // document.getElementById("ctx").addEventListener("click", clickCanvas);
+            //Upload user score
+            if(uploadUserScore){
+                $.get( '/insert_score/'+ score, function() {});
+                uploadUserScore = false;
             }
+            location.reload();
+            // function clickCanvas() {
+            //     if(isPaused){
+            //         location.reload();
+            //         isPaused = false;
+            //         startNewGame();
+            //         document.getElementById("ctx").removeEventListener('click', clickCanvas);
+            //     }
+            // }
 
             return;
         }
@@ -396,14 +407,17 @@
         versnelling = -4;
         modulesDocent = 150;
         modulesEnemy = 130;
+        document.getElementById("ctx").removeEventListener('click', startNewGame);
     };
 
 
     player = Player();
     enemy = Enemy();
     docent = Docent();
-    startNewGame();
-
+    // startNewGame();
+    document.getElementById("ctx").addEventListener("click", startNewGame);
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillText('Click to start a new game', 200, 250);
     setInterval(update,40);
 
 })();
