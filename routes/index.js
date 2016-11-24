@@ -11,7 +11,7 @@ var env = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Game', env: env});
+    res.render('index', {title: 'FlyingCode', env: env});
 });
 
 router.get('/login',
