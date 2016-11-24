@@ -3,7 +3,7 @@
  */
 (function () {
     var ctx = document.getElementById("ctx").getContext("2d");
-    // console.log(ctx);
+    ctx.fillText('Click to start a new game', 200, 250);
     ctx.font = '25px Arial';
     ctx.fillStyle = '#e1002d';
 
@@ -67,10 +67,10 @@
     var parseImg = function (ctx, a) {
         var img = images[a.img];
 
-        if (images['player'] === img) {
-            ctx.clearRect(a.x, a.y, frameWidth, frameHeight);
-            ctx.drawImage(img, shift, 0, frameWidth, frameHeight, a.x, a.y, frameWidth, frameHeight);
-        }
+            if (images['player'] === img) {
+                ctx.clearRect(a.x, a.y, frameWidth, frameHeight);
+                ctx.drawImage(img, shift, 0, frameWidth, frameHeight, a.x, a.y, frameWidth, frameHeight);
+            }
         else {
             ctx.drawImage(img, a.x, a.y, img.width, img.height);
         }
@@ -271,28 +271,24 @@
     };
 
     update = function () {
-
         if (modulesDocent > 40) {
             if (frameCount % 200 === 0) {
                 modulesDocent -= 10;
                 // console.log(modulesDocent);
             }
         }
-
         if (modulesEnemy > 60) {
             if (frameCount % 200 === 0) {
                 modulesEnemy -= 10;
                 // console.log(modulesEnemy);
             }
         }
-
         if (versnelling > -6) {
             if (frameCount % 150 === 0) {
                 versnelling -= 0.1;
                 // console.log(versnelling);
             }
         }
-
         if (isPaused) {
             // ctx.clearRect(0, 0, WIDTH, HEIGHT);
             // ctx.fillText('Game over! Klik om opnieuw te beginnen!', 200, 250);
@@ -408,16 +404,14 @@
         modulesDocent = 150;
         modulesEnemy = 130;
         document.getElementById("ctx").removeEventListener('click', startNewGame);
+        setInterval(update,40);
     };
-
 
     player = Player();
     enemy = Enemy();
     docent = Docent();
-    // startNewGame();
     document.getElementById("ctx").addEventListener("click", startNewGame);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.fillText('Click to start a new game', 200, 250);
-    setInterval(update,40);
 
 })();
