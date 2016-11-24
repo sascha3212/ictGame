@@ -21,8 +21,7 @@
     var timer = 0;
 
     var versnelling = -4;
-    var modulesDocent = 150;
-    var modulesEnemy = 130;
+    var modulesSpawn = 80;
 
     var uploadUserScore = true;
 
@@ -53,6 +52,7 @@
     var totalFrames = 7;
     var currentFrame = 0;
     var fps = 20;
+    var spawnedCount = 0;
 
     var animate = function () {
         if (currentFrame === totalFrames) {
@@ -270,44 +270,36 @@
             player.pressingUp = false;
     };
 
+    randomlyGenerateEntity = function() {
+        if(spawnedCount % 30 == 0 && spawnedCount != 0){
+            randomlyGenerateHearth();
+        }
+        else {
+            var randomFunction = [randomlyGenerateDocent, randomlyGenerateEnemy];
+            randomFunction[Math.floor(Math.random() * randomFunction.length)]();
+        }
+        console.log(spawnedCount);
+    }
+
     update = function () {
-        if (modulesDocent > 40) {
+        if (modulesSpawn > 30) {
             if (frameCount % 200 === 0) {
-                modulesDocent -= 10;
-                // console.log(modulesDocent);
+                modulesSpawn -= 10;
             }
         }
-        if (modulesEnemy > 60) {
-            if (frameCount % 200 === 0) {
-                modulesEnemy -= 10;
-                // console.log(modulesEnemy);
-            }
-        }
-        if (versnelling > -6) {
+        if (versnelling > -8) {
             if (frameCount % 150 === 0) {
-                versnelling -= 0.1;
-                // console.log(versnelling);
+                versnelling -= 0.2;
             }
         }
+
         if (isPaused) {
-            // ctx.clearRect(0, 0, WIDTH, HEIGHT);
-            // ctx.fillText('Game over! Klik om opnieuw te beginnen!', 200, 250);
-            // document.getElementById("ctx").addEventListener("click", clickCanvas);
             //Upload user score
             if(uploadUserScore){
                 $.get( '/insert_score/'+ score, function() {});
                 uploadUserScore = false;
             }
             location.reload();
-            // function clickCanvas() {
-            //     if(isPaused){
-            //         location.reload();
-            //         isPaused = false;
-            //         startNewGame();
-            //         document.getElementById("ctx").removeEventListener('click', clickCanvas);
-            //     }
-            // }
-
             return;
         }
 
@@ -323,15 +315,11 @@
                 requestAnimationFrame(animate);
             }
 
-            if (frameCount % 500 === 0) {
-                randomlyGenerateHearth();
-            }
-
-            if (frameCount % modulesDocent === 0) {
-                randomlyGenerateDocent();
-            }
-            if (frameCount % modulesEnemy === 0) {
-                randomlyGenerateEnemy();
+            if (frameCount % modulesSpawn === 0) {
+                randomlyGenerateEntity();
+                spawnedCount ++;
+                console.log(modulesSpawn);
+                console.log(versnelling);
             }
 
             player.attackCounter += player.atkSpd;
@@ -379,7 +367,6 @@
             if (player.hp <= 0) {
                 var timeSurvived = Date.now() - timeWhenGameStarted;
                 isPaused = true;
-                // startNewGame();
             }
             if (player.hp > 3) {
                 player.hp = 3;
