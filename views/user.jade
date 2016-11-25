@@ -18,8 +18,10 @@ block content
                     h1 Highscores
                     -var count = 1;
                     each user_score in highscores
-                        if count <= 10
-                            span= (count++  +". "+ user_score.score)
+                        if count <= 8
+                            span= (count++  +". "+ user_score.nickname)
+                            br
+                            span= user_score.score
                             br
 
         canvas(id="ctx", width="788", height="523")

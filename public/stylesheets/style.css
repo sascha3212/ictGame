@@ -30,3 +30,12 @@ a {
     width: 100%;
     float: left;
 }
+
+.inner h1 {
+    color:#e1002d;
+    font-size:20px!important;
+}
+.inner span {
+    color:#e1002d;
+    font-size:15px!important;
+}
